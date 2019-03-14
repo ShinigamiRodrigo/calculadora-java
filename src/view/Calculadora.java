@@ -31,7 +31,7 @@ import calculos.FuncoesMatematicas;
 
 public class Calculadora extends JFrame {
 	
-	//Macara
+	//Mascara
     //DecimalFormatSymbols ponto = new DecimalFormatSymbols();
     DecimalFormat df = new DecimalFormat("###,###.###");
     DecimalFormat virgula = new DecimalFormat("###,###,##0.00");
@@ -242,11 +242,15 @@ public class Calculadora extends JFrame {
 		
 		backsp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//if (!visor.getText().isEmpty()) visor = visor.getText().substring (0, palavra.length() - 1);
 				
 				String apaga = visor.getText();
-				apaga = apaga.substring(0, apaga.length() - 1);
-				visor.setText(apaga);
+				
+				if(apaga.length() > 0) {
+					apaga = apaga.substring(0, apaga.length() - 1);
+					visor.setText(apaga);
+				}else{
+					visor.setText("0");
+				}
 
 			}
 		});
@@ -258,6 +262,7 @@ public class Calculadora extends JFrame {
 		paine.add(btnCE);
 		btnCE.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				sinal = "";
 				visor.setText("0");
 			}
 		});
@@ -536,26 +541,34 @@ public class Calculadora extends JFrame {
 		btnfigual.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				valor2 = Double.parseDouble(visor.getText());
-
-				if(sinal.equals("soma")) {
+				
+				try {
+					if(sinal.equals("soma")) {
+						
+						visor.setText(df.format(mat.soma(valor1, valor2)) + "");
+						
+					}else if(sinal.equals("menos")) {
+						
+						visor.setText(df.format(mat.subtracao(valor1, valor2)) + "");
+						
+					}else if(sinal.equals("multiplica")) {
+						
+						visor.setText(df.format(mat.multiplica(valor1, valor2)) + "");
+						
+					}else if(sinal.equals("divide")) {
+						
+						visor.setText(df.format(mat.divisao(valor1, valor2)) + "");
+						
+					}else if(sinal.equals("porcentagem")) {
+						
+						visor.setText(df.format(mat.divisao(valor1, valor2)) + "");
+						
+					}
 					
-					visor.setText(df.format(mat.soma(valor1, valor2)) + "");
+				}catch(NullPointerException e1) {
 					
-				}else if(sinal.equals("menos")) {
-					
-					visor.setText(df.format(mat.subtracao(valor1, valor2)) + "");
-					
-				}else if(sinal.equals("multiplica")) {
-					
-					visor.setText(df.format(mat.multiplica(valor1, valor2)) + "");
-					
-				}else if(sinal.equals("divide")) {
-					
-					visor.setText(df.format(mat.divisao(valor1, valor2)) + "");
-					
-				}else if(sinal.equals("porcentagem")) {
-					
-					visor.setText(df.format(mat.divisao(valor1, valor2)) + "");
+					visor.setText("0");
+					System.out.println("NullPointerException, erro tratado");
 					
 				}
 			}
