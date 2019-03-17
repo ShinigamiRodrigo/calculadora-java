@@ -98,11 +98,26 @@ public class Calculadora extends JFrame {
 	JButton nove = new JButton("9");
 	JButton zero = new JButton("0");
 	
-	//Guardando as funções em uma variavel, uma variavel para guarda o sinal, os valores zerados
+	//Operações / Variaveis de texto / Variaveis parametro
 	FuncoesMatematicas mat = new FuncoesMatematicas();
+	
+	//null quando o objeto não foi instanciado
+	
+	//Strings
 	String sinal = null;
-	String guardaMS = "0";
-	double valor1 = 0, valor2 = 0;
+	String guardaMS = null;
+	
+	//Double
+	double guardaMais = 0;
+	double guardaMenos = 0;
+	double valor1 = 0;
+	double valor2 = 0;
+	double visorAgora = 0;
+	double somaMS = 0;
+	
+	//Boolean
+	boolean igual = false;
+	boolean somaAgain = false;
 	
 	//Calculadora 
 	public Calculadora(){
@@ -163,8 +178,10 @@ public class Calculadora extends JFrame {
 		
 		btnMC.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				
 				guardaMS = "0";
 				visor.setText("0");
+				
 			}
 		});
 		
@@ -176,7 +193,9 @@ public class Calculadora extends JFrame {
 		
 		btnMR.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+	
 				visor.setText(guardaMS);
+					
 			}
 		});
 		
@@ -188,11 +207,12 @@ public class Calculadora extends JFrame {
 		
 		btnMS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {	
+				
 				guardaMS = visor.getText();
 				
 				if(guardaMS != "") {
-					double visorAgora = Double.parseDouble(visor.getText());
-					double somaMS = Double.parseDouble(guardaMS);
+					visorAgora = Double.parseDouble(visor.getText());
+					somaMS = Double.parseDouble(guardaMS);
 					visor.setText(df.format(mat.soma(visorAgora, somaMS)) + "");
 				}
 			}
@@ -206,12 +226,9 @@ public class Calculadora extends JFrame {
 		
 		btnMais.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				double valorSub;
-				double valorM = Double.parseDouble(visor.getText());
-				if(visor.getText() != "") {
-					valorSub = valorM;
-					visor.setText(df.format(mat.soma(valorM, valorSub)) + "");
-				}
+				
+				guardaMais = Double.parseDouble(visor.getText());
+			
 			}
 		});
 		
@@ -223,12 +240,10 @@ public class Calculadora extends JFrame {
 		
 		btnMenos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				double valorSub;
-				double valorM = Double.parseDouble(visor.getText());
-				if(visor.getText() != "") {
-					valorSub = valorM;
-					visor.setText(df.format(mat.subtracao(valorM, valorSub)) + "");
-				}
+				guardaMenos = Double.parseDouble(visor.getText());
+				
+				visor.setText(df.format((guardaMais-guardaMenos)) + "");
+		
 			}
 		});
 		
@@ -245,7 +260,7 @@ public class Calculadora extends JFrame {
 				
 				String apaga = visor.getText();
 				
-				if(apaga.length() > 0) {
+				if(apaga.length() > 1) {
 					apaga = apaga.substring(0, apaga.length() - 1);
 					visor.setText(apaga);
 				}else{
@@ -262,7 +277,24 @@ public class Calculadora extends JFrame {
 		paine.add(btnCE);
 		btnCE.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				//Resetando tudo
+				
+				//Strings
 				sinal = "";
+				guardaMS = "";
+				
+				//Double
+				guardaMais = 0;
+				guardaMenos = 0;
+				visorAgora = 0;
+			    somaMS = 0;
+			    valor1 = 0;
+			    valor2 = 0;
+			    
+			    //boolean
+			    igual = false;
+			    somaAgain = false;
+			    		
 				visor.setText("0");
 			}
 		});
@@ -286,6 +318,20 @@ public class Calculadora extends JFrame {
 		btnmom.setBounds(125, 125, 30, 25);
 		paine.add(btnmom);
 		
+		btnmom.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					visorAgora = Double.parseDouble(visor.getText());
+					visor.setText(df.format((visorAgora * -1)) + "");
+				}catch(NumberFormatException e2) {
+					visor.setText("Err");
+					System.out.println("Erro tratado: " + e2);
+					
+				}
+			
+			}
+		});
+		
 		
 		//BTN RAIZ
 		btnraiz.setFont( new Font( "Arial", Font.PLAIN, 12 ) );
@@ -298,6 +344,10 @@ public class Calculadora extends JFrame {
 				valor1 = Double.parseDouble(visor.getText());
 			
 					visor.setText(df.format(mat.raiz(valor1)) + "");
+					if(igual) {
+						visor.setText(df.format(mat.raiz(valor1)) + "");
+						igual=false;
+					}
 						
 			}
 		});
@@ -316,6 +366,11 @@ public class Calculadora extends JFrame {
 					visor.setText("7");
 				}else {
 					visor.setText(visor.getText() + "7");
+					if(igual) {
+						visor.setText("7");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 				
 				
@@ -338,6 +393,11 @@ public class Calculadora extends JFrame {
 					visor.setText("8");
 				}else {
 					visor.setText(visor.getText() + "8");
+					if(igual) {
+						visor.setText("8");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 			}
 		});
@@ -355,6 +415,11 @@ public class Calculadora extends JFrame {
 					visor.setText("9");
 				}else {
 					visor.setText(visor.getText() + "9");
+					if(igual) {
+						visor.setText("9");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 			}
 		});
@@ -370,6 +435,11 @@ public class Calculadora extends JFrame {
 				valor1 = Double.parseDouble(visor.getText());
 				sinal = "divide";
 				visor.setText("0");
+				
+				if(igual) {
+					visor.setText("0");
+					igual=false;
+				}
 			}
 		});
 		
@@ -384,6 +454,11 @@ public class Calculadora extends JFrame {
 				valor1 = Double.parseDouble(visor.getText());
 				sinal = "porcentagem";
 				visor.setText("0");
+				
+				if(igual) {
+					visor.setText("0");
+					igual=false;
+				}
 			}
 		});
 		
@@ -401,6 +476,11 @@ public class Calculadora extends JFrame {
 					visor.setText("4");
 				}else {
 					visor.setText(visor.getText() + "4");
+					if(igual) {
+						visor.setText("4");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 			}
 		});
@@ -417,6 +497,11 @@ public class Calculadora extends JFrame {
 					visor.setText("5");
 				}else {
 					visor.setText(visor.getText() + "5");
+					if(igual) {
+						visor.setText("5");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 			}
 		});
@@ -433,6 +518,11 @@ public class Calculadora extends JFrame {
 					visor.setText("6");
 				}else {
 					visor.setText(visor.getText() + "6");
+					if(igual) {
+						visor.setText("6");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 			}
 		});
@@ -448,6 +538,11 @@ public class Calculadora extends JFrame {
 				valor1 = Double.parseDouble(visor.getText());
 				sinal = "multiplica";
 				visor.setText("0");
+				
+				if(igual) {
+					visor.setText("0");
+					igual=false;
+				}
 			}
 		});
 		
@@ -463,7 +558,7 @@ public class Calculadora extends JFrame {
 					visor.setText("0");
 				}else{
 					double valorFra = Double.parseDouble(visor.getText());
-					visor.setText(mat.divisao(1, valorFra) + "");
+					visor.setText(virgula.format(mat.divisao(1, valorFra)) + "");
 				}
 			}
 		});
@@ -483,6 +578,11 @@ public class Calculadora extends JFrame {
 					visor.setText("1");
 				}else{
 					visor.setText(visor.getText() + "1");
+					if(igual) {
+						visor.setText("1");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 			}
 		});
@@ -499,6 +599,11 @@ public class Calculadora extends JFrame {
 					visor.setText("2");
 				}else {
 					visor.setText(visor.getText() + "2");
+					if(igual) {
+						visor.setText("2");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 			}
 		});
@@ -515,6 +620,11 @@ public class Calculadora extends JFrame {
 					visor.setText("3");
 				}else {
 					visor.setText(visor.getText() + "3");
+					if(igual) {
+						visor.setText("3");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 			}
 		});
@@ -530,6 +640,11 @@ public class Calculadora extends JFrame {
 				valor1 = Double.parseDouble(visor.getText());
 				sinal = "menos";
 				visor.setText("0");
+				
+				if(igual) {
+					visor.setText("0");
+					igual=false;
+				}
 			}
 		});
 		
@@ -546,29 +661,39 @@ public class Calculadora extends JFrame {
 					if(sinal.equals("soma")) {
 						
 						visor.setText(df.format(mat.soma(valor1, valor2)) + "");
+						igual = true;
 						
 					}else if(sinal.equals("menos")) {
 						
 						visor.setText(df.format(mat.subtracao(valor1, valor2)) + "");
+						igual = true;
 						
 					}else if(sinal.equals("multiplica")) {
 						
 						visor.setText(df.format(mat.multiplica(valor1, valor2)) + "");
+						igual = true;
 						
 					}else if(sinal.equals("divide")) {
 						
 						visor.setText(df.format(mat.divisao(valor1, valor2)) + "");
+						igual = true;
 						
 					}else if(sinal.equals("porcentagem")) {
 						
 						visor.setText(df.format(mat.divisao(valor1, valor2)) + "");
+						igual = true;
 						
 					}
 					
 				}catch(NullPointerException e1) {
 					
 					visor.setText("0");
-					System.out.println("NullPointerException, erro tratado");
+					System.out.println("Erro tratado: " + e1);
+					
+				}catch(NumberFormatException e1) { //Socorro, não está funcionanado, ME RESPEITA JAVA!
+					
+					visor.setText("Err");
+					System.out.println("Erro tratado: " + e1);
 					
 				}
 			}
@@ -588,6 +713,11 @@ public class Calculadora extends JFrame {
 					visor.setText("0");
 				}else {
 					visor.setText(visor.getText() + "0");
+					if(igual) {
+						visor.setText("0");
+						valor1 = 0;
+						igual=false;
+					}
 				}
 			}
 		});
@@ -613,7 +743,14 @@ public class Calculadora extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				valor1 = Double.parseDouble(visor.getText());
 				sinal = "soma";
+				
 				visor.setText("0");
+				
+				if(igual) {
+					visor.setText("0");
+					igual=false;
+				}
+				
 			}
 		});
 		
@@ -622,6 +759,10 @@ public class Calculadora extends JFrame {
 		this.setVisible(true);
 		this.setResizable(false);
 		
+		
+	}
+	
+	public static void limpaVisor(){
 		
 	}
 	
