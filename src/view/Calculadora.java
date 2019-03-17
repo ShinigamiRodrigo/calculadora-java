@@ -12,6 +12,8 @@ import javax.swing.JMenuBar;
 
 //import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
+
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Font;
 import java.awt.Insets;
@@ -122,7 +124,8 @@ public class Calculadora extends JFrame {
 	//Calculadora 
 	public Calculadora(){
 		super("calculadora");
-		
+		visor.setEnabled(false);
+		visor.setDisabledTextColor(Color.BLACK);
 		//Criando um container para agrupar os botoes
 		//Não vai ter Layout, os objetos se agruparam através do metodo setBounds
 		Container paine = this.getContentPane();
